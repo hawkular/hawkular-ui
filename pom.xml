@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!--
 
     Copyright 2015-2016 Red Hat, Inc. and/or its affiliates
@@ -17,273 +17,357 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>org.hawkular</groupId>
-    <artifactId>hawkular-parent</artifactId>
-    <version>36</version>
+    <artifactId>hawkular</artifactId>
+    <version>1.0.0.Alpha13-SNAPSHOT</version>
   </parent>
 
-  <artifactId>hawkular</artifactId>
-  <!-- Important a released version should always follow any of these patterns: -->
-  <!-- major.minor.micro.Alpha[n] -->
-  <!-- major.minor.micro.Beta[n] -->
-  <!-- major.minor.micro.CR[n] -->
-  <!-- major.minor.micro.Final -->
-  <version>1.0.0.Alpha13-SNAPSHOT</version>
-  <packaging>pom</packaging>
-
-  <name>Hawkular</name>
-  <description>Hawkular Distribution</description>
-  <url>http://github.com/hawkular</url>
-  <inceptionYear>2015</inceptionYear>
-  <organization>
-    <name>Red Hat</name>
-    <url>http://www.redhat.com/</url>
-  </organization>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <modules>
-    <module>console</module>
-    <module>modules/hawkular-wildfly-agent-download</module>
-    <module>modules/pinger</module>
-    <module>modules/avail-creator</module>
-    <module>modules/hawkular-api-parent</module>
-    <module>feature-pack</module>
-    <module>dist</module>
-    <module>modules/end-to-end-test</module>
-  </modules>
-
-  <scm>
-    <connection>scm:git:git@github.com:hawkular/hawkular.git</connection>
-    <developerConnection>scm:git:git@github.com:hawkular/hawkular.git</developerConnection>
-    <url>https://github.com/hawkular</url>
-    <tag>HEAD</tag>
-  </scm>
-  <issueManagement>
-    <system>jira</system>
-    <url>https://issues.jboss.org/browse/HAWKULAR</url>
-  </issueManagement>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>hawkular-console</artifactId>
+  <name>Hawkular: Admin console</name>
+  <packaging>war</packaging>
 
   <properties>
-
-    <!-- Maven Plugin versions -->
-    <version.com.github.eirslett.frontend-maven-plugin>0.0.26</version.com.github.eirslett.frontend-maven-plugin>
-    <version.com.spotify.docker-maven-plugin>0.2.12</version.com.spotify.docker-maven-plugin>
-
-    <!-- DEPENDENCY VERSIONS -->
-
-    <!-- CONVENTIONS: -->
-    <!-- - A version property must be specified in the format "version.{groupId}" -->
-    <!-- - If groupId is not unique, append the property name with ".{artifactId}" -->
-    <!-- - Version properties must be sorted alphabetically -->
-    <version.com.google.code.gson>2.2.4</version.com.google.code.gson>
-    <version.gnu.getopt>1.0.13</version.gnu.getopt>
-
-    <version.org.hawkular.accounts>2.0.22.Final</version.org.hawkular.accounts>
-    <version.org.hawkular.agent>0.17.0.Final</version.org.hawkular.agent>
-    <version.org.hawkular.alerts>1.0.2.Final</version.org.hawkular.alerts>
-    <version.org.hawkular.btm>0.7.4.Final</version.org.hawkular.btm>
-    <version.org.hawkular.cmdgw>0.11.0.Final</version.org.hawkular.cmdgw>
-    <version.org.hawkular.commons>0.4.0.Final</version.org.hawkular.commons>
-    <version.org.hawkular.inventory>0.13.0.Final</version.org.hawkular.inventory>
-    <version.org.hawkular.metrics>0.13.0.Final</version.org.hawkular.metrics>
-
-    <version.org.jboss.weld.se>2.3.2.Final</version.org.jboss.weld.se>
-    <version.org.keycloak>1.8.1.Final</version.org.keycloak>
-    <version.org.keycloak.secretstore>1.0.12.Final</version.org.keycloak.secretstore>
-    <version.rxjava>1.0.16</version.rxjava>
-    <version.hystrix-core>1.4.21</version.hystrix-core>
-    <version.hystrix-request-servlet>1.1.2</version.hystrix-request-servlet>
-    <version.hystrix-metrics-event-stream>1.4.10</version.hystrix-metrics-event-stream>
-    <version.com.github.tomakehurst.wiremock>1.56</version.com.github.tomakehurst.wiremock>
-
-    <!-- Versions that could be moved to parent: -->
-    <version.org.apache.commons.lang3>3.4</version.org.apache.commons.lang3>
-    <version.com.squareup.okhttp>2.6.0</version.com.squareup.okhttp>
-
-    <!-- Keep in sync with modules/system/layers/base/... of WF/EAP -->
-    <version.commons.io>2.4</version.commons.io>
-    <version.org.apache.httpcomponents>4.5</version.org.apache.httpcomponents>
+    <!-- TODO: should be /hawkular-console and /hawkular-console/ -->
+    <hawkular.console.timestamp>${maven.build.timestamp}</hawkular.console.timestamp>
+    <hawkular.console.context>/</hawkular.console.context>
+    <hawkular.console.index.html.base.href>/</hawkular.console.index.html.base.href>
+    <bower.link.package />
+    <node.version>v4.2.2</node.version>
+    <node.npm.version>2.14.7</node.npm.version>
+    <hawkular.checkstyle.excludes>
+      release.properties,
+      **/*.d.ts,
+      **/vendor/**/*.js,
+      **/vendor/**/*.css,
+      **/vendor/fonts/*.*,
+    </hawkular.checkstyle.excludes>
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-
-      <dependency>
-        <groupId>org.hawkular.accounts</groupId>
-        <artifactId>hawkular-accounts-api</artifactId>
-        <version>${version.org.hawkular.accounts}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.alerts</groupId>
-        <artifactId>hawkular-alerts-actions-email</artifactId>
-        <version>${version.org.hawkular.alerts}</version>
-        <type>war</type>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.alerts</groupId>
-        <artifactId>hawkular-alerts-api</artifactId>
-        <version>${version.org.hawkular.alerts}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.alerts</groupId>
-        <artifactId>hawkular-alerts-rest</artifactId>
-        <version>${version.org.hawkular.alerts}</version>
-        <type>war</type>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.commons</groupId>
-        <artifactId>hawkular-bus-common</artifactId>
-        <version>${version.org.hawkular.commons}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.commons</groupId>
-        <artifactId>hawkular-bus-mdb</artifactId>
-        <version>${version.org.hawkular.commons}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.commons</groupId>
-        <artifactId>hawkular-commons-embedded-cassandra-ear</artifactId>
-        <version>${version.org.hawkular.commons}</version>
-        <type>ear</type>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.inventory</groupId>
-        <artifactId>hawkular-inventory-api</artifactId>
-        <version>${version.org.hawkular.inventory}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.inventory</groupId>
-        <artifactId>hawkular-inventory-bus-api</artifactId>
-        <version>${version.org.hawkular.inventory}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.inventory</groupId>
-        <artifactId>hawkular-inventory-cdi</artifactId>
-        <version>${version.org.hawkular.inventory}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.inventory</groupId>
-        <artifactId>hawkular-inventory-dist</artifactId>
-        <version>${version.org.hawkular.inventory}</version>
-        <type>war</type>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.metrics</groupId>
-        <artifactId>hawkular-metrics-component</artifactId>
-        <version>${version.org.hawkular.metrics}</version>
-        <type>war</type>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.metrics</groupId>
-        <artifactId>hawkular-metrics-clients-common</artifactId>
-        <version>${version.org.hawkular.metrics}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hawkular.cmdgw</groupId>
-        <artifactId>hawkular-command-gateway-war</artifactId>
-        <version>${version.org.hawkular.cmdgw}</version>
-        <type>war</type>
-      </dependency>
-
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>${version.commons.io}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.netflix.hystrix</groupId>
-        <artifactId>hystrix-core</artifactId>
-        <version>${version.hystrix-core}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.netflix.hystrix</groupId>
-        <artifactId>hystrix-request-servlet</artifactId>
-        <version>${version.hystrix-request-servlet}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.netflix.hystrix</groupId>
-        <artifactId>hystrix-metrics-event-stream</artifactId>
-        <version>${version.hystrix-metrics-event-stream}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.reactivex</groupId>
-        <artifactId>rxjava</artifactId>
-        <version>${version.rxjava}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.wildfly.bom</groupId>
-        <artifactId>wildfly-javaee7</artifactId>
-        <version>${version.org.wildfly}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>${version.org.apache.httpcomponents}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>${version.com.google.guava}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.okhttp</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>${version.com.squareup.okhttp}</version>
-      </dependency>
-
-    </dependencies>
-  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.ocpsoft.rewrite</groupId>
+      <artifactId>rewrite-servlet</artifactId>
+      <version>2.0.12.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.servlet</groupId>
+      <artifactId>jboss-servlet-api_3.1_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
   <build>
-    <pluginManagement>
-      <plugins>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <nonFilteredFileExtensions>
+                <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+              </nonFilteredFileExtensions>
+              <outputDirectory>${basedir}/target/gulp-build/</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/webapp/</directory>
+                  <excludes>
+                    <exclude>WEB-INF/</exclude>
+                  </excludes>
+                  <filtering>true</filtering>
+                </resource>
+                <resource>
+                  <directory>src/main/scripts/</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-        <plugin>
-          <groupId>com.github.eirslett</groupId>
-          <artifactId>frontend-maven-plugin</artifactId>
-          <version>${version.com.github.eirslett.frontend-maven-plugin}</version>
-        </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <webResources>
+            <resource>
+              <directory>src/main/webapp</directory>
+              <includes>
+                <include>WEB-INF/*</include>
+              </includes>
+              <filtering>true</filtering>
+            </resource>
+            <resource>
+              <directory>target/gulp-build/</directory>
+              <includes>
+                <include>index.html</include>
+                <include>time-out.html</include>
+                <include>libs/**</include>
+                <include>dist/**</include>
+              </includes>
+              <excludes>
+                <exclude>node_modules/**</exclude>
+                <exclude>.bower/**</exclude>
+                <exclude>node/**</exclude>
+                <exclude>libs/hawkular-ui-components/node_modules/**</exclude>
+              </excludes>
+              <filtering>false</filtering>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
 
-        <plugin>
-          <groupId>com.spotify</groupId>
-          <artifactId>docker-maven-plugin</artifactId>
-          <version>${version.com.spotify.docker-maven-plugin}</version>
-        </plugin>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <excludes combine.children="append">
+            <exclude>**/scripts/**/.babelrc</exclude>
+            <exclude>**/vendor/**/*.js</exclude>
+            <exclude>**/vendor/**/*.css</exclude>
+            <exclude>**/vendor/fonts/*.*</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
 
-      </plugins>
-    </pluginManagement>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <excludes>${hawkular.checkstyle.excludes}</excludes>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
   </build>
 
+  <profiles>
+    <profile>
+      <id>cache</id>
+      <properties>
+        <hawkular.console.context>/</hawkular.console.context>
+        <hawkular.console.index.html.base.href>/</hawkular.console.index.html.base.href>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <configuration>
+              <excludeDefaultDirectories>true</excludeDefaultDirectories>
+              <filesets>
+                <fileset>
+                  <directory>target/gulp-build/</directory>
+                  <excludes>
+                    <exclude>node/**</exclude>
+                    <exclude>node_modules/**</exclude>
+                    <exclude>libs/**</exclude>
+                  </excludes>
+                  <followSymlinks>false</followSymlinks>
+                </fileset>
+              </filesets>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+
+            <configuration>
+              <workingDirectory>target/gulp-build/</workingDirectory>
+            </configuration>
+
+            <executions>
+              <execution>
+                <id>npm install</id>
+                <goals>
+                  <goal>npm</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <arguments>install</arguments>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>bower install</id>
+                <goals>
+                  <goal>bower</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <arguments>install</arguments>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>gulp build</id>
+                <goals>
+                  <goal>gulp</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <arguments>build</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Download node.js and related modules to install 3rd party frontend libraries -->
+    <profile>
+      <id>default-build</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <hawkular.console.context>/</hawkular.console.context>
+        <hawkular.console.index.html.base.href>/</hawkular.console.index.html.base.href>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+
+            <configuration>
+              <workingDirectory>target/gulp-build/</workingDirectory>
+            </configuration>
+
+            <executions>
+              <execution>
+                <id>install node and npm</id>
+                <goals>
+                  <goal>install-node-and-npm</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <nodeVersion>${node.version}</nodeVersion>
+                  <npmVersion>${node.npm.version}</npmVersion>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>npm install</id>
+                <goals>
+                  <goal>npm</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <arguments>install</arguments>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>bower install</id>
+                <goals>
+                  <goal>bower</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <arguments>install</arguments>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>gulp build</id>
+                <goals>
+                  <goal>gulp</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <arguments>build --production</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>link</id>
+      <activation>
+        <property>
+          <name>bower.link.package</name>
+          <value />
+        </property>
+      </activation>
+      <properties>
+        <hawkular.console.context>/</hawkular.console.context>
+        <hawkular.console.index.html.base.href>/</hawkular.console.index.html.base.href>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+
+            <configuration>
+              <workingDirectory>target/gulp-build/</workingDirectory>
+            </configuration>
+
+            <executions>
+              <execution>
+                <id>install node and npm</id>
+                <goals>
+                  <goal>install-node-and-npm</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <nodeVersion>${node.version}</nodeVersion>
+                  <npmVersion>${node.npm.version}</npmVersion>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>npm install</id>
+                <goals>
+                  <goal>npm</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <arguments>install</arguments>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>bower link</id>
+                <goals>
+                  <goal>bower</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <arguments>link ${bower.link.package}</arguments>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>gulp build</id>
+                <goals>
+                  <goal>gulp</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <arguments>build</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
 </project>

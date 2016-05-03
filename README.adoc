@@ -1,83 +1,20 @@
-= Hawkular
+= Hawkular Console
 
-ifdef::env-github[]
-[link=https://travis-ci.org/hawkular/hawkular]
-image:https://travis-ci.org/hawkular/hawkular.svg?branch=master["Build Status", link="https://travis-ci.org/hawkular/hawkular"]
-endif::[]
+[.lead]
+*Hawkular Console* is the home of the UI console for Hawkular.  The current console is based on https://github.com/hawtio/hawtio/blob/master/docs/Overview2dotX.md[Hawt.io 2], which is (now) a javascript based client-side framework.
+This console application pulls in various bower packages (libs) and Hawt.io 2 plugins (which are also bower packages) to plug-n-play various functionality to the console. Since one of the bower packages it pulls in is our Hawt.io plugin, it loads this plugin and adds it to the nav bar.
 
-Hawkular is a modular systems monitoring suite, that consists of several sub-projects for
-storing of metrics, alerting on incoming events and more. Those projects are developed
-in their own GitHub repositories and integrated in this project.
-
-Project website: http://www.hawkular.org (its code: https://github.com/hawkular/hawkular.github.io)
-
-Sub-projects are currently:
-
-* https://github.com/hawkular/hawkular-metrics[Hawkular-metrics]: metric storage and retrieval engine
-* https://github.com/hawkular/hawkular-bus[Hawkular-bus]: asynchronous bus to connect the various parts
-* https://github.com/hawkular/hawkular-alerts[Hawkular-alerts]: alerting on events.
-* Hawkular UI Console (a https://github.com/hawtio[hawt.io 2 plugin])
-** https://github.com/hawkular/hawkular-ui-services[Hawkular-ui-services]: common services and ngResource wrappers for Hawkular REST Apis.
-
-image::https://www.bithound.io/github/hawkular/hawkular-ui-services/badges/score.svg[link="https://www.bithound.io/github/hawkular/hawkular-ui-services"]
-image::https://www.bithound.io/github/hawkular/hawkular-ui-services/badges/dependencies.svg[link="https://www.bithound.io/github/hawkular/hawkular-ui-services/master/dependencies/npm"]
-
-** https://github.com/hawkular/hawkular-charts[Hawkular-charts]: Charts and other Angular visualization components used to graphically render data in _Hawkular._
-
-image::https://www.bithound.io/github/hawkular/hawkular-charts/badges/score.svg[link="https://www.bithound.io/github/hawkular/hawkular-charts"]
-image::https://www.bithound.io/github/hawkular/hawkular-charts/badges/dependencies.svg[link="https://www.bithound.io/github/hawkular/hawkular-chars/master/dependencies/npm"]
-
-* https://github.com/hawkular/hawkular-build-tools[Hawkular build tools]: Helpers and definitions to build Hawkular
-
-== About this repository
-
-In this repository we are assembling the individual pieces, sub projects and UI into
-the overall Hawkular instance.
-
-In the root `pom.xml` you can actually set the particular versions of the components, but we can't
-guarantee the various permutation of component versions to work together.
-
-== Building
-
-To build Hawkular, clone this repository and build from the top level.
-
-[source,shell]
-----
-$ git clone https://github.com/hawkular/hawkular.git
-$ cd hawkular
-$ mvn install
-----
-Once those steps are achieved, .zip and .tgz archives will be available in `dist/target` directory.
-
-TIP: If you build with `mvn install -Pdev`, an uncompressed directory will be created in `dist/target`.
-A default user will be created, the username is `jdoe` and the password is `password`. This can be convenient
-when you are working on the project as you won't have to unzip/untar and register a new user. The uncompressed directory
-can be found in `dist/target/hawkular-${version}/hawkular-${version}/` and run with `bin/standalone.sh` as normally
-starting a WildFly server.
-
-Please have a look at the
-http://www.hawkular.org/docs/dev/development.html[developer documentation] for more information.
-
-== License
-
-Hawkular is released under Apache License, Version 2.0 as described in the link:LICENSE[LICENSE] document.
-
-----
-   Copyright 2015-2016 Red Hat, Inc.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-----
+For more info on Hawkular UI development, please see: http://www.hawkular.org/docs/dev/ui-dev.html[Hawkular UI Dev Guide]
 
 
+== BTM/APM Integration
 
+The UI integration is performed by adding the hawkularbtm.js/css files to the _dist_ folder, which are referenced in the _index.html_.
+
+Currently the BTM/APM pages also reference the html files on the server, rather than from the templateCache (to be investigated), so these are also added to the console war.
+
+=== Additional bower dependencies
+
+* angular-xeditable
+* angularUtils-pagination
 

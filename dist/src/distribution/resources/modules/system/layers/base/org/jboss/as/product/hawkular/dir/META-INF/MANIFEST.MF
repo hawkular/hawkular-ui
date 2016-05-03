@@ -1,2 +1,0 @@
-JBoss-Product-Release-Name: Hawkular
-JBoss-Product-Release-Version: ${project.version}
