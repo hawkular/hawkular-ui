@@ -1,7 +1,0 @@
-{
-  "directory" : "libs",
-  "storage": {
-    "cache" : ".bower/cache",
-    "registry" : ".bower/registry"
-  }
-}
