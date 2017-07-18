@@ -25,3 +25,7 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.container-fluid {
+  text-align: center;
+}

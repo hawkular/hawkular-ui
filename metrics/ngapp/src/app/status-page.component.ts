@@ -22,6 +22,7 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/finally';
+import { environment } from './environment';
 
 @Component({
   selector: 'status-page',
@@ -37,7 +38,7 @@ export class StatusPageComponent {
   loading = true;
 
   constructor (http: Http) {
-    http.get('/hawkular/metrics/status')
+    http.get(environment.metricsURL + '/status')
       .map((response) => response.json())
       .finally(() => this.loading = false)
       .subscribe((json) => {

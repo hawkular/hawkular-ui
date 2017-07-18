@@ -21,7 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 
-import { HawkularChartsModule } from 'hawkular-charts';
+import { HawkularChartsModule } from '@hawkular/hawkular-charts';
 
 import { AppComponent } from './app.component';
 import { MetricsPageComponent } from './metrics-page.component';

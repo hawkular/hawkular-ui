@@ -17,7 +17,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { MetricChartComponent } from 'hawkular-charts';
+import { MetricChartComponent } from '@hawkular/hawkular-charts';
+import { environment } from './environment';
 
 @Component({
   selector: 'chart',
@@ -35,6 +36,7 @@ export class ChartComponent implements OnInit {
   loading = false;
   timeRange: number;
   useRawData = false;
+  metricsURL = environment.metricsURL;
 
   constructor(private route: ActivatedRoute) {
     this.timeRange = this.intervalToSeconds(this.timeframe);

@@ -20,7 +20,7 @@
       "styles": [
         "../node_modules/patternfly/dist/css/patternfly.min.css",
         "../node_modules/patternfly/dist/css/patternfly-additions.min.css",
-        "../node_modules/hawkular-charts/styles.css",
+        "../node_modules/@hawkular/hawkular-charts/styles.css",
         "styles.css"
       ],
       "scripts": [

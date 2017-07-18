@@ -4,7 +4,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve --base-href="/"` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+You need to have a running Hawkular Metrics server on `http://localhost:8080` to allow server communciation. Eventually you can configure it in `src/environments/environment.ts`.
+
+Note that in release builds (ie. with -prod flag), the prod environment is loaded, url becomes relative to serving host and base-href is `/hawkular/metrics/ui/`.
 
 ## Code scaffolding
 
@@ -13,6 +17,12 @@ Run `ng generate component component-name` to generate a new component. You can 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+
+## Release (prod) build
+
+- Switch to the `release` branch and merge `master` in (be sure to fetch/rebase upstream first).
+- Run `ng build -prod`
+- Commit and push to upstream's release
 
 ## Running unit tests
 

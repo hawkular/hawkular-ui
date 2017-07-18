@@ -1,6 +1,10 @@
 <div class="chart">
-  <h1>{{title}}</h1>
+  <h1>{{metric}}</h1>
   <div class="spinner" *ngIf="loading"></div>
+  <p *ngIf="tenant !== undefined && type !== undefined">
+    Tenant: {{tenant}}<br/>
+    Metric type: {{type}}
+  </p>
   <h3>{{notice}}</h3>
   <div class="row toolbar-pf">
     <div class="col-sm-12">
@@ -36,16 +40,18 @@
       </form>
     </div>
   </div>
-  <hk-metric-chart *ngIf="metric &amp;&amp; tenant &amp;&amp; type"
-    metricUrl="/hawkular/metrics"
-    [metricId]="metric"
-    [metricTenantId]="tenant"
-    [metricType]="type"
-    chartType="line"
-    [timeRange]="timeRange"
-    (timeRangeChange)="childTimeRangeChange($event)"
-    show-data-points=true
-    [raw]="useRawData"
-    [refreshIntervalInSeconds]="refreshRate">
-  </hk-metric-chart>
+  <div class="chart-container">
+    <hk-metric-chart *ngIf="metric &amp;&amp; tenant &amp;&amp; type"
+      metricUrl="{{metricsURL}}"
+      [metricId]="metric"
+      [metricTenantId]="tenant"
+      [metricType]="type"
+      chartType="line"
+      [timeRange]="timeRange"
+      (timeRangeChange)="childTimeRangeChange($event)"
+      show-data-points=true
+      [raw]="useRawData"
+      [refreshIntervalInSeconds]="refreshRate">
+    </hk-metric-chart>
+  </div>
 </div>

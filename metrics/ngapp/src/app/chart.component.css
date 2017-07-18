@@ -36,3 +36,7 @@
 .checkbox-inline {
     margin: 0;
 }
+
+.chart .toolbar-pf {
+    margin-bottom: 50px;
+}

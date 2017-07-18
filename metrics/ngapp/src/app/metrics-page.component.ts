@@ -21,6 +21,7 @@ import { Http, RequestOptions, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/finally';
+import { environment } from './environment';
 
 import { ChartComponent } from './chart.component';
 import { Metric } from './model/metric';
@@ -65,7 +66,7 @@ export class MetricsPageComponent implements OnInit {
     const options = new RequestOptions({ headers: new Headers({
       'Hawkular-Tenant': this.tenant
     })});
-    this.http.get('/hawkular/metrics/metrics', options)
+    this.http.get(environment.metricsURL + '/metrics', options)
       .map((response) => response.json())
       .finally(() => this.loading = false)
       .subscribe((metrics: Metric[]) => {
