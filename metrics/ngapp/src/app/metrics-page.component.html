@@ -3,6 +3,15 @@
     Metrics
     <div class="spinner spinner-inverse spinner-sm" *ngIf="loading"></div>
   </div>
+  <div class="alert alert-info alert-dismissable" *ngIf="showGrafanaAlert">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="showGrafanaAlert=false">
+      <span class="pficon pficon-close"></span>
+    </button>
+    <span class="pficon pficon-info"></span>
+    <strong>Intended for test and debug!</strong> For more advanced capabilities we suggest that you take a look at our
+    <a href="http://www.hawkular.org/hawkular-clients/grafana/docs/quickstart-guide/" class="alert-link">Hawkular Grafana datasource</a>
+    or the <a href="https://github.com/pilhuhn/hawkfx" class="alert-link">HawkFX client</a>.
+  </div>
   <div class="section">
     Tenant
     <input type="text" [(ngModel)]="tenant" (ngModelChange)="onTenantChanged($event)"/>
