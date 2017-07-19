@@ -37,6 +37,7 @@ export class MetricsPageComponent implements OnInit {
   metrics: Metric[] = [];
   hTypingTimeout = null;
   loading = false;
+  showGrafanaAlert = true;
 
   constructor (private http: Http, private route: ActivatedRoute) {
   }
