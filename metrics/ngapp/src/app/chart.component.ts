@@ -15,7 +15,7 @@
 /// limitations under the License.
 ///
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { MetricChartComponent } from '@hawkular/hawkular-charts';
 import { environment } from './environment';
@@ -25,7 +25,7 @@ import { environment } from './environment';
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css']
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent implements OnInit, OnChanges {
   timeframe: string = '6h';
   refreshRate = 5;
   title: string = '';
@@ -37,6 +37,7 @@ export class ChartComponent implements OnInit {
   timeRange: number;
   useRawData = false;
   metricsURL = environment.metricsURL;
+  displayChart = false;
 
   constructor(private route: ActivatedRoute) {
     this.timeRange = this.intervalToSeconds(this.timeframe);
@@ -47,12 +48,27 @@ export class ChartComponent implements OnInit {
       this.tenant = params['tenant'];
       this.type = params['type'];
       this.metric = params['metric'];
-      if (this.tenant && this.type && this.metric) {
-        this.title = "Tenant '" + this.tenant + "', " + this.type + " '" + this.metric + "'";
-      } else {
-        this.notice = 'Enter a tenant then select a metric from the left menu'
-      }
+      this.refreshComputedVars();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.refreshComputedVars();
+  }
+
+  refreshComputedVars() {
+    this.notice = '';
+    this.displayChart = false;
+    if (this.tenant && this.type && this.metric) {
+      this.title = "Tenant '" + this.tenant + "', " + this.type + " '" + this.metric + "'";
+      if (this.type === 'availability' || this.type === 'string') {
+        this.notice = 'Availability and String metrics cannot be displayed at this time'
+      } else {
+        this.displayChart = true;
+      }
+    } else {
+      this.notice = 'Enter a tenant then select a metric from the left menu'
+    }
   }
 
   intervalToSeconds(value) {
@@ -75,8 +91,6 @@ export class ChartComponent implements OnInit {
   }
 
   childTimeRangeChange(event) {
-    console.log('ngOnChanges');
-    console.log(event);
     if (event.hasOwnProperty('start')) {
       this.timeframe = 'custom';
     }

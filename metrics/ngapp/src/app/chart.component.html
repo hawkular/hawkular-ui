@@ -41,7 +41,7 @@
     </div>
   </div>
   <div class="chart-container">
-    <hk-metric-chart *ngIf="metric &amp;&amp; tenant &amp;&amp; type"
+    <hk-metric-chart *ngIf="displayChart"
       metricUrl="{{metricsURL}}"
       [metricId]="metric"
       [metricTenantId]="tenant"
