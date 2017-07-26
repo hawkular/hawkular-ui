@@ -42,10 +42,10 @@ import { ChartComponent } from './chart.component';
     HawkularChartsModule,
     RouterModule.forRoot([{
         path: '',
-        redirectTo: '/metrics',
+        redirectTo: '/r/metrics',
         pathMatch: 'full'
       }, {
-        path: 'metrics',
+        path: 'r/metrics',
         component: MetricsPageComponent,
         children: [{
           path: ':tenant/:type/:metric',
@@ -61,7 +61,7 @@ import { ChartComponent } from './chart.component';
           outlet: 'chart'
         }]
       }, {
-        path: 'status',
+        path: 'r/status',
         component: StatusPageComponent
       }
     ])
