@@ -16,18 +16,30 @@
 ///
 
 import { Component } from '@angular/core';
+import { Configuration } from './model/configuration';
 import { HawkularConfigService } from './hawkular-config.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'config-page',
+  templateUrl: './config-page.component.html',
+  styleUrls: ['./config-page.component.css']
 })
-export class AppComponent {
-  showGrafanaAlert = false;
-  tenant = '';
+export class ConfigPageComponent {
+  config: Configuration;
+  changed = false;
 
   constructor (private configService: HawkularConfigService) {
-    configService.observeConfig().subscribe(cfg => this.tenant = cfg.tenant);
+    this.config = configService.get();
+    configService.observeConfig().subscribe(cfg => this.config = cfg);
+  }
+
+  onSubmit(event) {
+    this.configService.set(this.config);
+    this.changed = false;
+  }
+
+  onReset(event) {
+    this.config = this.configService.get();
+    this.changed = false;
   }
 }

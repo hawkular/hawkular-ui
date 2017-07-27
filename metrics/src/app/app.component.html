@@ -1,18 +1,49 @@
 <div class="menu">
-  <nav class="navbar navbar-default navbar-pf navbar-fixed-top" role="navigation">
-    <div>
+  <nav class="navbar navbar-pf-vertical">
+    <div class="navbar-header">
       <a href="http://www.hawkular.org/" class="navbar-brand">
         <img class="navbar-brand-icon" src="assets/hawkular_logo_small.png" alt=""/>
       </a>
       <a href="http://www.hawkular.org/" class="navbar-brand brand-name">Hawkular</a>
       <span class="navbar-brand brand-statement">A time series metrics engine based on Cassandra</span>
-      <ul class="nav navbar-nav navbar-primary navbar-right">
-        <li><a routerLink="/r/metrics" activeClassName="active">Metrics</a></li>
-        <li><a routerLink="/r/status" activeClassName="active">Status</a></li>
-      </ul>
     </div>
   </nav>
 </div>
-<div class="content">
+<div class="sidebar nav-pf-vertical nav-pf-vertical-with-sub-menus">
+  <ul class="list-group">
+    <li [routerLinkActive]="['active']" class="list-group-item">
+      <a routerLink="/r/status" activeClassName="active">
+        <span class="fa fa-info-circle" title="Status"></span>
+        <span class="list-group-item-value">Status</span>
+      </a>
+    </li>
+    <li [routerLinkActive]="['active']" class="list-group-item" activeClassName="active">
+      <a routerLink="/r/config">
+        <span class="fa fa-cog" title="Configuration"></span>
+        <span class="list-group-item-value">Configuration</span>
+      </a>
+    </li>
+    <li *ngIf="tenant" [routerLinkActive]="['active']" class="list-group-item" activeClassName="active">
+      <a [routerLink]="['/r/metrics', {tenant: tenant}]">
+        <span class="fa fa-line-chart" title="Metrics"></span>
+        <span class="list-group-item-value">Metrics</span>
+      </a>
+      <div class="sidebar-inner">
+        <metrics-list></metrics-list>
+      </div>
+    </li>
+  </ul>
+  <div class="alert alert-info alert-dismissable" *ngIf="showGrafanaAlert">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="showGrafanaAlert=false">
+      <span class="pficon pficon-close"></span>
+    </button>
+    <span class="pficon pficon-info"></span>
+    <strong>Intended for test and debug!</strong> <span *ngIf="!isOpenShift">For more advanced capabilities we suggest that you take a look at our
+    <a href="http://www.hawkular.org/hawkular-clients/grafana/docs/quickstart-guide/" class="alert-link">Hawkular Grafana datasource</a>
+    or the <a href="https://github.com/pilhuhn/hawkfx" class="alert-link">HawkFX client</a>.</span>
+  </div>
+</div>
+
+<div class="container-fluid container-pf-nav-pf-vertical">
   <router-outlet></router-outlet>
 </div>

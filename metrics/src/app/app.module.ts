@@ -23,16 +23,19 @@ import { HttpModule } from '@angular/http';
 
 import { HawkularChartsModule } from '@hawkular/hawkular-charts';
 
+import { HawkularConfigService } from './hawkular-config.service';
 import { AppComponent } from './app.component';
-import { MetricsPageComponent } from './metrics-page.component';
+import { MetricsListComponent } from './metrics-list.component';
 import { StatusPageComponent } from './status-page.component';
+import { ConfigPageComponent } from './config-page.component';
 import { ChartComponent } from './chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MetricsPageComponent,
+    MetricsListComponent,
     StatusPageComponent,
+    ConfigPageComponent,
     ChartComponent
   ],
   imports: [
@@ -42,31 +45,27 @@ import { ChartComponent } from './chart.component';
     HawkularChartsModule,
     RouterModule.forRoot([{
         path: '',
-        redirectTo: '/r/metrics',
+        redirectTo: '/r/status',
         pathMatch: 'full'
       }, {
+        path: 'r/metrics/:tenant/:type/:metric',
+        component: ChartComponent,
+      }, {
+        path: 'r/metrics/:tenant',
+        component: ChartComponent,
+      }, {
         path: 'r/metrics',
-        component: MetricsPageComponent,
-        children: [{
-          path: ':tenant/:type/:metric',
-          component: ChartComponent,
-          outlet: 'chart'
-        }, {
-          path: ':tenant',
-          component: ChartComponent,
-          outlet: 'chart'
-        }, {
-          path: '',
-          component: ChartComponent,
-          outlet: 'chart'
-        }]
+        component: ChartComponent,
+      }, {
+        path: 'r/config',
+        component: ConfigPageComponent
       }, {
         path: 'r/status',
         component: StatusPageComponent
       }
     ])
   ],
-  providers: [],
+  providers: [HawkularConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

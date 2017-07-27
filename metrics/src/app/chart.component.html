@@ -1,8 +1,8 @@
 <div class="chart">
   <h1>{{metric}}</h1>
   <div class="spinner" *ngIf="loading"></div>
-  <p *ngIf="tenant !== undefined && type !== undefined">
-    Tenant: {{tenant}}<br/>
+  <p *ngIf="hawkularConfig.tenant !== undefined && type !== undefined">
+    Tenant: {{hawkularConfig.tenant}}<br/>
     Metric type: {{type}}
   </p>
   <h3>{{notice}}</h3>
@@ -44,7 +44,7 @@
     <hk-metric-chart *ngIf="displayChart"
       metricUrl="{{metricsURL}}"
       [metricId]="metric"
-      [metricTenantId]="tenant"
+      [metricTenantId]="hawkularConfig.tenant"
       [metricType]="type"
       chartType="line"
       [timeRange]="timeRange"

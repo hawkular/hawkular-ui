@@ -1,0 +1,9 @@
+<div class="spinner spinner-inverse spinner-sm" *ngIf="loading"></div>
+{{message}}
+<ul>
+  <li *ngFor="let metric of metrics">
+    <a [routerLink]="['/r/metrics', {tenant: metric.tenantId, type: metric.type, metric: metric.id}]" role="button" title="{{metric.id}}">
+      {{metric.id}}
+    </a>
+  </li>
+</ul>
