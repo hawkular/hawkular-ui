@@ -23,4 +23,5 @@
 export const environment = {
   production: false,
   metricsURL: 'http://localhost:8080/hawkular/metrics'
+//  metricsURL: 'https://metrics-openshift-infra.192.168.1.29.xip.io/hawkular/metrics'
 };

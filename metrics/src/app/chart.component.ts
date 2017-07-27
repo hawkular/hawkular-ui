@@ -18,7 +18,9 @@
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { MetricChartComponent } from '@hawkular/hawkular-charts';
+import { HawkularConfigService } from './hawkular-config.service';
 import { environment } from './environment';
+import { Configuration } from './model/configuration';
 
 @Component({
   selector: 'chart',
@@ -28,9 +30,8 @@ import { environment } from './environment';
 export class ChartComponent implements OnInit, OnChanges {
   timeframe: string = '6h';
   refreshRate = 5;
-  title: string = '';
   notice: string = '';
-  tenant: string;
+  hawkularConfig: Configuration;
   type: string;
   metric: string;
   loading = false;
@@ -39,15 +40,21 @@ export class ChartComponent implements OnInit, OnChanges {
   metricsURL = environment.metricsURL;
   displayChart = false;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private configService: HawkularConfigService) {
+    this.hawkularConfig = configService.get();
     this.timeRange = this.intervalToSeconds(this.timeframe);
   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.tenant = params['tenant'];
+      const tenant = params['tenant'];
       this.type = params['type'];
       this.metric = params['metric'];
+      if (tenant != this.hawkularConfig.tenant) {
+        this.hawkularConfig.tenant = tenant;
+        // Update config outside of ng-init process (there's no hurry)
+        setTimeout(() => this.configService.set(this.hawkularConfig), 400);
+      }
       this.refreshComputedVars();
     });
   }
@@ -59,15 +66,16 @@ export class ChartComponent implements OnInit, OnChanges {
   refreshComputedVars() {
     this.notice = '';
     this.displayChart = false;
-    if (this.tenant && this.type && this.metric) {
-      this.title = "Tenant '" + this.tenant + "', " + this.type + " '" + this.metric + "'";
+    if (!this.hawkularConfig.tenant) {
+      this.notice = 'The tenant is not configured';
+    } else if (this.type && this.metric) {
       if (this.type === 'availability' || this.type === 'string') {
-        this.notice = 'Availability and String metrics cannot be displayed at this time'
+        this.notice = 'Availability and String metrics cannot be displayed at this time';
       } else {
         this.displayChart = true;
       }
     } else {
-      this.notice = 'Enter a tenant then select a metric from the left menu'
+      this.notice = 'Select a metric from the left menu';
     }
   }
 

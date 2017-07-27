@@ -1,0 +1,44 @@
+<div id="config">
+  <form class="form-horizontal plain-form" (ngSubmit)="onSubmit()" #configForm="ngForm">
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="tenant">Tenant</label>
+      <div class="col-sm-9">
+        <input type="text" id="tenant" [(ngModel)]="config.tenant" (ngModelChange)="changed=true" name="tenant" class="form-control" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="authentication">Authentication</label>
+      <div class="col-sm-9">
+        <select id="authentication" class="form-control" [(ngModel)]="config.auth.method" (ngModelChange)="changed=true" name="authMethod">
+          <option value='none'>None</option>
+          <option value='basic'>Basic HTTP</option>
+          <option value='token'>Token</option>
+        </select>
+      </div>
+    </div>
+    <div *ngIf="config.auth.method == 'token'" class="form-group">
+      <label class="col-sm-3 control-label" for="token">Token</label>
+      <div class="col-sm-9">
+        <input id="token" class="form-control" type="text" [(ngModel)]="config.auth.token" (ngModelChange)="changed=true" name="authToken"/>
+      </div>
+    </div>
+    <div *ngIf="config.auth.method == 'basic'" class="form-group">
+      <label class="col-sm-3 control-label" for="username">Username</label>
+      <div class="col-sm-9">
+        <input id="username" class="form-control" type="text" [(ngModel)]="config.auth.username" (ngModelChange)="changed=true" name="authUsername"/>
+      </div>
+    </div>
+    <div *ngIf="config.auth.method == 'basic'" class="form-group">
+      <label class="col-sm-3 control-label" for="password">Password</label>
+      <div class="col-sm-9">
+        <input id="password" class="form-control" type="password" [(ngModel)]="config.auth.password" (ngModelChange)="changed=true" name="authPassword"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-10">
+        <button type="submit" class="btn btn-primary">Save<span *ngIf="changed">*</span></button>
+        <button class="btn btn-default" (click)="onReset($event)">Reset</button>
+      </div>
+    </div>
+  </form>
+</div>
