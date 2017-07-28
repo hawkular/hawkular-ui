@@ -5,12 +5,19 @@
     Tenant: {{hawkularConfig.tenant}}<br/>
     Metric type: {{type}}
   </p>
-  <h3>{{notice}}</h3>
+  <div class="alert alert-warning" *ngIf="warning">
+    <span class="pficon pficon-warning-triangle-o"></span>
+    {{warning}}
+  </div>
+  <div class="alert alert-info" *ngIf="notice">
+    <span class="pficon pficon-info"></span>
+    {{notice}}
+  </div>
   <div class="row toolbar-pf">
     <div class="col-sm-12">
       <form class="toolbar-pf-actions">
         <div class="form-group">
-          <select [(ngModel)]="timeframe" (ngModelChange)="onTimeFrameChanged($event)" [ngModelOptions]="{standalone: true}">
+          <select class="form-control" [(ngModel)]="timeframe" (ngModelChange)="onTimeFrameChanged($event)" [ngModelOptions]="{standalone: true}">
             <option value='5m'>Last 5 minutes</option>
             <option value='15m'>Last 15 minutes</option>
             <option value='30m'>Last 30 minutes</option>
@@ -23,9 +30,9 @@
             <option value='custom' disabled=true>Custom</option>
           </select>
         </div>
-        <div class="form-group">
-          <span>Refresh rate:</span>
-          <select [(ngModel)]="refreshRate" [ngModelOptions]="{standalone: true}">
+        <div class="form-group form-inline">
+          <label class="control-label" for="refresh">Refresh rate</label>
+          <select id="refresh" class="form-control" [(ngModel)]="refreshRate" [ngModelOptions]="{standalone: true}">
             <option value='5'>5 seconds</option>
             <option value='10'>10 seconds</option>
             <option value='30'>30 seconds</option>
@@ -34,8 +41,8 @@
           </select>
         </div>
         <div class="form-group">
-          <input type="checkbox" class="checkbox-inline" [(ngModel)]="useRawData" [ngModelOptions]="{standalone: true}">
-          <span>Raw data</span>
+          <input id="raw" type="checkbox" class="checkbox-inline" [(ngModel)]="useRawData" [ngModelOptions]="{standalone: true}">
+          <label class="control-label" for="raw">Raw data</label>
         </div>
       </form>
     </div>
