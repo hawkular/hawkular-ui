@@ -29,8 +29,9 @@ import { Configuration } from './model/configuration';
 })
 export class ChartComponent implements OnInit, OnChanges {
   timeframe: string = '6h';
-  refreshRate = 5;
+  refreshRate = 30;
   notice: string = '';
+  warning: string = '';
   hawkularConfig: Configuration;
   type: string;
   metric: string;
@@ -65,12 +66,13 @@ export class ChartComponent implements OnInit, OnChanges {
 
   refreshComputedVars() {
     this.notice = '';
+    this.warning = '';
     this.displayChart = false;
     if (!this.hawkularConfig.tenant) {
-      this.notice = 'The tenant is not configured';
+      this.warning = 'The tenant is not configured';
     } else if (this.type && this.metric) {
       if (this.type === 'availability' || this.type === 'string') {
-        this.notice = 'Availability and String metrics cannot be displayed at this time';
+        this.warning = 'Availability and String metrics cannot be displayed at this time';
       } else {
         this.displayChart = true;
       }

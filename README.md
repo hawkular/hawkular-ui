@@ -25,7 +25,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Release (prod) build
 
 - Switch to the `release` branch and merge `master` in (be sure to fetch/rebase upstream first).
-- Run `ng build -prod`
+- Run `ng build -prod --aot=false`
 - Commit and push to upstream's release
 
 ## Running unit tests
