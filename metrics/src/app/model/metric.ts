@@ -19,6 +19,7 @@ export interface Metric {
   id: string;
   type: string;
   tenantId: string;
+  url: string;
   // tags: { [key:string]:string; };
   // dataRetention: number;
 }
