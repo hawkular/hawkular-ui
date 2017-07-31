@@ -16,8 +16,9 @@
   <div class="row toolbar-pf">
     <div class="col-sm-12">
       <form class="toolbar-pf-actions">
-        <div class="form-group">
-          <select class="form-control" [(ngModel)]="timeframe" (ngModelChange)="onTimeFrameChanged($event)" [ngModelOptions]="{standalone: true}">
+        <div class="form-group form-inline">
+          <label class="control-label" for="timerange">Time range</label>
+          <select id="timerange" class="form-control" [(ngModel)]="timeframe" (ngModelChange)="onTimeFrameChanged($event)" [ngModelOptions]="{standalone: true}">
             <option value='5m'>Last 5 minutes</option>
             <option value='15m'>Last 15 minutes</option>
             <option value='30m'>Last 30 minutes</option>
