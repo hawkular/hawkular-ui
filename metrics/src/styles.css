@@ -82,7 +82,8 @@
     padding: 0 20px 0 20px;
 }
 
-.sidebar .sidebar-inner ul>li a:hover {
+.sidebar .sidebar-inner ul>li a:hover,
+.sidebar .sidebar-inner ul>li a.active {
     background: rgba(101,109,115,.15);
 }
 
