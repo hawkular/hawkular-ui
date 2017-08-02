@@ -2,8 +2,12 @@
 {{message}}
 <ul>
   <li *ngFor="let metric of metrics">
-    <a [routerLink]="['/r/metrics', {tenant: metric.tenantId, type: metric.type, metric: metric.id}]" role="button" title="{{metric.id}}">
-      {{metric.id}}
+    <a [routerLink]="['/r/metrics', {tenant: metric.tenantId, type: metric.type, metric: metric.id}]"
+      (click)="selectedMetric = metric"
+      [ngClass]="{'active': selectedMetric && metric.id === selectedMetric.id && metric.type === selectedMetric.type}"
+      role="button"
+      title="{{metric.id}}">
+        {{metric.id}}
     </a>
   </li>
 </ul>

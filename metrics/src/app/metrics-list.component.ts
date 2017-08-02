@@ -35,6 +35,7 @@ export class MetricsListComponent {
   message = '';
   metrics: Metric[] = [];
   loading = false;
+  selectedMetric: Metric;
 
   constructor (private http: Http, private configService: HawkularConfigService) {
     configService.observeHeaders().subscribe(h => this.fetchMetrics(h));
