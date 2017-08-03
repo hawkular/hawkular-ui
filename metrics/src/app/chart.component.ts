@@ -18,6 +18,7 @@
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { MetricChartComponent } from '@hawkular/hawkular-charts';
+import { AvailChartComponent } from '@hawkular/hawkular-charts';
 import { HawkularConfigService } from './hawkular-config.service';
 import { environment } from './environment';
 import { Configuration } from './model/configuration';
@@ -39,10 +40,16 @@ export class ChartComponent implements OnInit, OnChanges {
   timeRange: number;
   useRawData = false;
   metricsURL = environment.metricsURL;
-  displayChart = false;
+  authHeader: string;
+  displayMetric = false;
+  displayAvail = false;
 
   constructor(private route: ActivatedRoute, private configService: HawkularConfigService) {
     this.hawkularConfig = configService.get();
+    const headers = configService.getHeaders();
+    if (headers) {
+      this.authHeader = headers.get('Authorization');
+    }
     this.timeRange = this.intervalToSeconds(this.timeframe);
   }
 
@@ -67,14 +74,17 @@ export class ChartComponent implements OnInit, OnChanges {
   refreshComputedVars() {
     this.notice = '';
     this.warning = '';
-    this.displayChart = false;
+    this.displayMetric = false;
+    this.displayAvail = false;
     if (!this.hawkularConfig.tenant) {
       this.warning = 'The tenant is not configured';
     } else if (this.type && this.metric) {
-      if (this.type === 'availability' || this.type === 'string') {
-        this.warning = 'Availability and String metrics cannot be displayed at this time';
+      if (this.type === 'string') {
+        this.warning = 'String metrics cannot be displayed at this time';
+      } else if (this.type === 'availability') {
+        this.displayAvail = true;
       } else {
-        this.displayChart = true;
+        this.displayMetric = true;
       }
     } else {
       this.notice = 'Select a metric from the left menu';
