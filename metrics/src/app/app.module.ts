@@ -48,7 +48,7 @@ import { ChartComponent } from './chart.component';
         redirectTo: '/r/status',
         pathMatch: 'full'
       }, {
-        path: 'r/metrics/:tenant/:type/:metric',
+        path: 'r/metrics/:tenant/:metrics',
         component: ChartComponent,
       }, {
         path: 'r/metrics/:tenant',

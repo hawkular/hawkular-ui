@@ -17,11 +17,11 @@
 
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { MetricChartComponent } from '@hawkular/hawkular-charts';
 import { AvailChartComponent } from '@hawkular/hawkular-charts';
 import { HawkularConfigService } from './hawkular-config.service';
 import { environment } from './environment';
 import { Configuration } from './model/configuration';
+import { MetricRouteParam, fromKeys } from './model/metric-route-param';
 
 @Component({
   selector: 'chart',
@@ -31,18 +31,20 @@ import { Configuration } from './model/configuration';
 export class ChartComponent implements OnInit, OnChanges {
   timeframe: string = '6h';
   refreshRate = 30;
-  notice: string = '';
-  warning: string = '';
+  title = '';
+  types: string;
+  notice = '';
+  warning = '';
   hawkularConfig: Configuration;
-  type: string;
-  metric: string;
+  metrics: MetricRouteParam[] = [];
+  numericMetrics: MetricRouteParam[] = [];
+  availMetrics: MetricRouteParam[] = [];
+  stringMetrics: MetricRouteParam[] = [];
   loading = false;
   timeRange: number;
-  useRawData = false;
+  buckets = 50;
   metricsURL = environment.metricsURL;
   authHeader: string;
-  displayMetric = false;
-  displayAvail = false;
 
   constructor(private route: ActivatedRoute, private configService: HawkularConfigService) {
     this.hawkularConfig = configService.get();
@@ -56,8 +58,9 @@ export class ChartComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       const tenant = params['tenant'];
-      this.type = params['type'];
-      this.metric = params['metric'];
+      if (params['metrics']) {
+        this.metrics = fromKeys(params['metrics'].split(','));
+      }
       if (tenant != this.hawkularConfig.tenant) {
         this.hawkularConfig.tenant = tenant;
         // Update config outside of ng-init process (there's no hurry)
@@ -74,18 +77,23 @@ export class ChartComponent implements OnInit, OnChanges {
   refreshComputedVars() {
     this.notice = '';
     this.warning = '';
-    this.displayMetric = false;
-    this.displayAvail = false;
+    this.numericMetrics = [];
+    this.availMetrics = [];
+    this.stringMetrics = [];
     if (!this.hawkularConfig.tenant) {
       this.warning = 'The tenant is not configured';
-    } else if (this.type && this.metric) {
-      if (this.type === 'string') {
-        this.warning = 'String metrics cannot be displayed at this time';
-      } else if (this.type === 'availability') {
-        this.displayAvail = true;
-      } else {
-        this.displayMetric = true;
-      }
+    } else if (this.metrics.length > 0) {
+      this.metrics.forEach(m => {
+        if (m.type === 'string') {
+          this.stringMetrics.push(m);
+        } else if (m.type === 'availability') {
+          this.availMetrics.push(m);
+        } else {
+          this.numericMetrics.push(m);
+        }
+      });
+      this.title = this.metrics.map(m => m.name).join(', ');
+      this.types = Array.from(new Set(this.metrics.map(m => m.type))).join(', ');
     } else {
       this.notice = 'Select a metric from the left menu';
     }

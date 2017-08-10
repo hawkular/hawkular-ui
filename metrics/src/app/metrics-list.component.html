@@ -2,12 +2,11 @@
 {{message}}
 <ul>
   <li *ngFor="let metric of metrics">
-    <a [routerLink]="['/r/metrics', {tenant: metric.tenantId, type: metric.type, metric: metric.id}]"
-      (click)="selectedMetric = metric"
-      [ngClass]="{'active': selectedMetric && metric.id === selectedMetric.id && metric.type === selectedMetric.type}"
+    <a (click)="onClick($event, metric)"
+      [ngClass]="{'active': isSelected(metric)}"
       role="button"
-      title="{{metric.id}}">
-        {{metric.id}}
+      title="{{metric.name}}">
+        {{metric.name}}
     </a>
   </li>
 </ul>
