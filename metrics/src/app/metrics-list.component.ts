@@ -35,23 +35,29 @@ export class MetricsListComponent {
   message = '';
   metrics: Metric[] = [];
   loading = false;
+  selectedMetric: Metric;
 
   constructor (private http: Http, private configService: HawkularConfigService) {
     configService.observeHeaders().subscribe(h => this.fetchMetrics(h));
   }
 
   fetchMetrics(headers: Headers) {
-    this.loading = true;
+    const h = setTimeout(() => this.loading = true, 500);
     this.message = '';
+    this.metrics = [];
     if (!headers) {
-      this.metrics = [];
       this.message = 'The tenant is not configured';
+      clearTimeout(h);
+      this.loading = false;
       return;
     }
     const options = new RequestOptions({ headers: headers });
     this.http.get(environment.metricsURL + '/metrics', options)
       .map((response) => response.json())
-      .finally(() => this.loading = false)
+      .finally(() => {
+        clearTimeout(h);
+        this.loading = false;
+      })
       .subscribe((metrics: Metric[]) => {
         if (metrics && metrics.length > 0) {
           this.metrics = metrics.sort((a,b) => {
@@ -62,11 +68,9 @@ export class MetricsListComponent {
           });
           this.message = '';
         } else {
-          this.metrics = [];
           this.message = 'No metric found for this tenant';
         }
       }, (err) => {
-        this.metrics = [];
         if (err.status == 0 && err.statusText == '') {
           this.message = 'Could not connect to the server';
         } else {

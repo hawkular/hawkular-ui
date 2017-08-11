@@ -30,4 +30,12 @@ export class AppComponent {
   constructor (private configService: HawkularConfigService) {
     configService.observeConfig().subscribe(cfg => this.tenant = cfg.tenant);
   }
+
+  refresh(event) {
+    // Simulate a config change so that config subscribers force refresh
+    this.configService.set(this.configService.get());
+    // Not sure why, we need "stopPropagation" AND return false to prevent the parent routerLink to be activated
+    event.stopPropagation();
+    return false;
+  }
 }

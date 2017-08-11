@@ -14,18 +14,25 @@ You need to have a running Hawkular Metrics server on `http://localhost:8080` to
 
 Note that in release builds (ie. with -prod flag), the prod environment is loaded, url becomes relative to serving host and base-href is `/hawkular/metrics/ui/`.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
-
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
+## Testing dev changes within Hawkular Metrics
+
+Hawkular Metrics pulls the `dist` directory of hawkular-ui from github. To test UI changes within metrics:
+
+- Checkout the `release` branch and merge your work in. Unlike other remote branches, `release` contains the `dist` directory. Or alternatively you can remove `dist` from `.gitignore` and commit, but make sure you won't send a pull request with that commit.
+- Build this project `ng build -prod --aot=false` (the -prod flag is important as `prod` environment is configured to use the hosting server for metrics url)
+- Open the `pom.xml` of `hawkular-metrics-api-jaxrs` and edit properties:
+  - `hawkular-ui.git.repo` to your GIT repo (example for hawkular-ui cloned in `/work` of local filesystem: `scm:git:/work/hawkular-ui/.git`)
+  - `hawkular-ui.git.branch` to your local branch that contains `dist`
+- Rebuild Hawkular Metrics, enjoy.
+
 ## Release (prod) build
 
 - Switch to the `release` branch and merge `master` in (be sure to fetch/rebase upstream first).
-- Run `ng build -prod`
+- Run `ng build -prod --aot=false`
 - Commit and push to upstream's release
 
 ## Running unit tests
