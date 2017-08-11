@@ -15,11 +15,16 @@
 /// limitations under the License.
 ///
 
-export interface Metric {
-  id: string;
-  type: string;
-  tenantId: string;
-  url: string;
-  // tags: { [key:string]:string; };
-  // dataRetention: number;
+export class MetricRouteParam {
+  constructor(public name: string, public type: string) {}
+  key(): string {
+    return this.type + '@' + this.name;
+  }
+}
+
+export function fromKeys(keys: string[]): MetricRouteParam[] {
+  return keys.map(k => {
+    const at = k.indexOf('@');
+    return new MetricRouteParam(k.substr(at + 1), k.substring(0, at));
+  });
 }

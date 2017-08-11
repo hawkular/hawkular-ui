@@ -16,13 +16,14 @@
 ///
 
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/finally';
 import { environment } from './environment';
 
-import { Metric } from './model/metric';
+import { MetricRouteParam } from './model/metric-route-param';
 import { Configuration } from './model/configuration';
 import { HawkularConfigService } from './hawkular-config.service';
 
@@ -33,11 +34,12 @@ import { HawkularConfigService } from './hawkular-config.service';
 })
 export class MetricsListComponent {
   message = '';
-  metrics: Metric[] = [];
+  metrics: MetricRouteParam[] = [];
   loading = false;
-  selectedMetric: Metric;
+  selectedMetrics: Set<string> = new Set();
+  tenant: string;
 
-  constructor (private http: Http, private configService: HawkularConfigService) {
+  constructor (private router: Router, private http: Http, private configService: HawkularConfigService) {
     configService.observeHeaders().subscribe(h => this.fetchMetrics(h));
   }
 
@@ -45,6 +47,7 @@ export class MetricsListComponent {
     const h = setTimeout(() => this.loading = true, 500);
     this.message = '';
     this.metrics = [];
+    this.selectedMetrics.clear();
     if (!headers) {
       this.message = 'The tenant is not configured';
       clearTimeout(h);
@@ -58,13 +61,11 @@ export class MetricsListComponent {
         clearTimeout(h);
         this.loading = false;
       })
-      .subscribe((metrics: Metric[]) => {
+      .subscribe((metrics: any[]) => {
         if (metrics && metrics.length > 0) {
-          this.metrics = metrics.sort((a,b) => {
-              return a.id < b.id ? -1 : 1;
-          });
-          this.metrics.forEach(m => {
-            m.url = m.tenantId + '/' + m.type + '/' + encodeURIComponent(m.id);
+          this.tenant = metrics[0].tenantId;
+          this.metrics = metrics.map(m => new MetricRouteParam(m.id, m.type)).sort((a,b) => {
+              return a.name < b.name ? -1 : 1;
           });
           this.message = '';
         } else {
@@ -77,5 +78,27 @@ export class MetricsListComponent {
           this.message = 'An error occured while accessing the server: [' + err.status + '] ' + err.statusText;
         }
       });
+  }
+
+  isSelected(metric: MetricRouteParam) {
+    return this.selectedMetrics.has(metric.key());
+  }
+
+  onClick(event, metric: MetricRouteParam) {
+    const key = metric.key();
+    // Multiple selection not possible yet with avail metrics
+    if (event.ctrlKey && metric.type !== 'availability') {
+      if (this.selectedMetrics.has(key)) {
+        // Remove
+        this.selectedMetrics.delete(key);
+      } else {
+        // Add
+        this.selectedMetrics.add(key);
+      }
+    } else {
+      this.selectedMetrics.clear();
+      this.selectedMetrics.add(key);
+    }
+    this.router.navigate(['/r/metrics', {tenant: this.tenant, metrics: Array.from(this.selectedMetrics)}]);
   }
 }

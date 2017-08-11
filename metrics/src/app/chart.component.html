@@ -1,13 +1,17 @@
 <div class="chart">
-  <h1>{{metric}}</h1>
+  <h1>{{title}}</h1>
   <div class="spinner" *ngIf="loading"></div>
-  <p *ngIf="hawkularConfig.tenant !== undefined && type !== undefined">
+  <p *ngIf="hawkularConfig.tenant !== undefined && types !== undefined">
     Tenant: {{hawkularConfig.tenant}}<br/>
-    Metric type: {{type}}
+    Metric type: {{types}}
   </p>
   <div class="alert alert-warning" *ngIf="warning">
     <span class="pficon pficon-warning-triangle-o"></span>
     {{warning}}
+  </div>
+  <div class="alert alert-warning" *ngIf="stringMetrics.length > 0">
+    <span class="pficon pficon-warning-triangle-o"></span>
+    String metrics cannot be displayed at this time
   </div>
   <div class="alert alert-info" *ngIf="notice">
     <span class="pficon pficon-info"></span>
@@ -41,32 +45,37 @@
             <option value='0'>Never</option>
           </select>
         </div>
-        <div class="form-group">
-          <input id="raw" type="checkbox" class="checkbox-inline" [(ngModel)]="useRawData" [ngModelOptions]="{standalone: true}">
-          <label class="control-label" for="raw">Raw data</label>
+        <div class="form-group form-inline">
+          <label class="control-label" for="buckets">Buckets</label>
+          <select id="buckets" class="form-control" [(ngModel)]="buckets" [ngModelOptions]="{standalone: true}">
+            <option value='0'>None (raw data)</option>
+            <option value='10'>10</option>
+            <option value='30'>30</option>
+            <option value='50'>50</option>
+            <option value='100'>100</option>
+            <option value='500'>500</option>
+          </select>
         </div>
       </form>
     </div>
   </div>
   <div class="chart-container">
-    <hk-metric-chart *ngIf="displayMetric"
+    <hk-metric-chart-dyn *ngIf="numericMetrics.length > 0"
       [metricUrl]="metricsURL"
       [authHeader]="authHeader"
-      [metricId]="metric"
+      [metricIds]="numericMetrics"
       [metricTenantId]="hawkularConfig.tenant"
-      [metricType]="type"
       chartType="line"
       [timeRange]="timeRange"
       (timeRangeChange)="childTimeRangeChange($event)"
-      show-data-points=true
-      [raw]="useRawData"
+      [buckets]="buckets"
       [refreshIntervalInSeconds]="refreshRate"
       yAxisTickFormat="s">
-    </hk-metric-chart>
-    <hk-availability-chart *ngIf="displayAvail"
+    </hk-metric-chart-dyn>
+    <hk-availability-chart *ngIf="availMetrics.length === 1"
       [metricUrl]="metricsURL"
       [authHeader]="authHeader"
-      [metricId]="metric"
+      [metricId]="availMetrics[0].name"
       [metricTenantId]="hawkularConfig.tenant"
       [timeRange]="timeRange"
       (timeRangeChange)="childTimeRangeChange($event)"
