@@ -48,18 +48,6 @@ import { ChartComponent } from './chart.component';
         redirectTo: '/r/status',
         pathMatch: 'full'
       }, {
-        path: 'r/metrics/:tenant/:type/:metric',
-        component: ChartComponent,
-      }, {
-        path: 'r/metrics/:tenant',
-        component: ChartComponent,
-      }, {
-        path: 'r/metrics',
-        component: ChartComponent,
-      }, {
-        path: 'r/config',
-        component: ConfigPageComponent
-      }, {
         path: 'r/status',
         component: StatusPageComponent
       }
