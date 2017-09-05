@@ -17,30 +17,6 @@
         <span class="list-group-item-value">Status</span>
       </a>
     </li>
-    <li [routerLinkActive]="['active']" class="list-group-item" activeClassName="active">
-      <a routerLink="/r/config">
-        <span class="fa fa-cog" title="Configuration"></span>
-        <span class="list-group-item-value">Configuration</span>
-      </a>
-    </li>
-    <li *ngIf="tenant" [routerLinkActive]="['active']" class="list-group-item" activeClassName="active">
-      <a [routerLink]="['/r/metrics', {tenant: tenant}]">
-        <span class="fa fa-line-chart" title="Metrics"></span>
-        <span class="list-group-item-value">Metrics</span>
-        <a class="menu-item-button" (click)="refresh($event)">
-          <span class="fa fa-refresh"></span>
-        </a>
-      </a>
-      <div class="sidebar-inner">
-        <metrics-list></metrics-list>
-      </div>
-    </li>
-    <li *ngIf="!tenant" class="list-group-item disabled" title="You must configure a tenant">
-      <a>
-        <span class="fa fa-line-chart"></span>
-        <span class="list-group-item-value">Metrics</span>
-      </a>
-    </li>
   </ul>
   <div class="alert alert-info alert-dismissable" *ngIf="showGrafanaAlert">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="showGrafanaAlert=false">
